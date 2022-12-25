@@ -9,6 +9,7 @@ function VerifyCardNumber(cardNumber) {
     console.log("cannot verify this for now");
   }
 }
+
 function VerifyVisa(numArray) {
   let substitutionArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
@@ -41,12 +42,48 @@ function VerifyVisa(numArray) {
   console.log(`sumvalue is ${sumValue}`);
 
   if (parseInt(sumValue) % 10 === 0) {
-    console.log("this is a valid visa");
+    console.log("this is a valid card");
   } else {
-    console.log("this visa is invalid");
+    console.log("this card is invalid");
   }
 }
 
-function VerifyMasterCard(cardNumber) {}
+function VerifyMasterCard(numArray) {
+  let substitutionArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-VerifyCardNumber("xxxx-xxxx-xxxx-xxxx");
+  for (index = 1; index < numArray.length; index++) {
+    if (parseInt(index % 2) != 0) {
+      let curr = numArray[index];
+      if (curr * 2 > 9) {
+        let productValue = curr * 2;
+        let resultingArray = `${productValue}`.split("");
+        substitutionArray[index] =
+          parseInt(resultingArray[0]) + parseInt(resultingArray[1]);
+      } else {
+        substitutionArray[index] = curr * 2;
+      }
+    }
+  }
+
+  for (index = 1; index < numArray.length; index++) {
+    if (parseInt(index % 2) !== 0) {
+      numArray[index] = substitutionArray[index];
+    }
+  }
+
+  console.log(numArray);
+
+  const sumValue = numArray.reduce((result, v) => {
+    return parseInt(result) + parseInt(v);
+  }, 0);
+
+  console.log(`sumvalue is ${sumValue}`);
+
+  if (parseInt(sumValue) % 10 === 0) {
+    console.log("this is a valid card");
+  } else {
+    console.log("this card is invalid");
+  }
+}
+
+VerifyCardNumber("5105105105105100");
